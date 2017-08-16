@@ -18,7 +18,8 @@
 
 from key_vault_sample_base import KeyVaultSampleBase, keyvaultsample, get_name, run_all_samples
 from azure.common.credentials import ServicePrincipalCredentials
-from azure.keyvault import KeyVaultClient
+from azure.keyvault import KeyVaultClient, KeyVaultAuthentication
+from azure.keyvault import KeyVaultId
 
 
 class AuthenticationSample(KeyVaultSampleBase):
@@ -34,15 +35,53 @@ class AuthenticationSample(KeyVaultSampleBase):
         # create a vault to validate authentication with the KeyVaultClient
         vault = self.create_vault()
 
+        # create the service principle credentials used to authenticate the client
         credentials = ServicePrincipalCredentials(client_id=self.config.client_id,
                                                   secret=self.config.client_secret,
                                                   tenant=self.config.tenant_id)
 
+        # create the client using the created credentials
         client = KeyVaultClient(credentials)
 
-        client.set_secret(vault.properties.vault_uri, 'auth-sample-secret', 'vault is authenticated')
+        # set and get a secret from the vault to validate the client is authenticated
+        print('creating secret...')
+        print(client.set_secret(vault.properties.vault_uri, 'auth-sample-secret', 'client is authenticated to the vault'))
 
-        client.get_secret(vault.properties.vault_uri, 'auth-sample-secret')
+        print('getting secret...')
+        print(client.get_secret(vault.properties.vault_uri, 'auth-sample-secret', secret_version=KeyVaultId.version_none))
+
+    @keyvaultsample
+    def auth_using_adal_callback(self):
+        """
+        authenticates to the Azure Key Vault by providing a callback to authenticate using adal 
+        """
+        # create a vault to validate authentication with the KeyVaultClient
+        vault = self.create_vault()
+
+        import adal
+
+        # create an adal authentication context
+        auth_context = adal.AuthenticationContext('https://login.microsoftonline.com/%s' % self.config.tenant_id)
+
+        # create a callback to supply the token type and access token on request
+        def adal_callback(server, resource, scope):
+            token = auth_context.acquire_token_with_client_credentials(resource=resource,
+                                                                       client_id=self.config.client_id,
+                                                                       client_secret=self.config.client_secret)
+            return token['tokenType'], token['accessToken']
+
+        # create a KeyVaultAuthentication instance which will callback to the supplied adal_callback
+        auth = KeyVaultAuthentication(adal_callback)
+
+        # create the KeyVaultClient using the created KeyVaultAuthentication instance
+        client = KeyVaultClient(auth)
+
+        # set and get a secret from the vault to validate the client is authenticated
+        print('creating secret...')
+        print(client.set_secret(vault.properties.vault_uri, 'auth-sample-secret', 'client is authenticated to the vault'))
+
+        print('getting secret...')
+        print(client.get_secret(vault.properties.vault_uri, 'auth-sample-secret', secret_version=KeyVaultId.version_none))
 
 
 if __name__ == "__main__":
