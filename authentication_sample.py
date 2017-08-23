@@ -45,10 +45,12 @@ class AuthenticationSample(KeyVaultSampleBase):
 
         # set and get a secret from the vault to validate the client is authenticated
         print('creating secret...')
-        print(client.set_secret(vault.properties.vault_uri, 'auth-sample-secret', 'client is authenticated to the vault'))
+        secret_bundle = client.set_secret(vault.properties.vault_uri, 'auth-sample-secret', 'client is authenticated to the vault')
+        print(secret_bundle)
 
         print('getting secret...')
-        print(client.get_secret(vault.properties.vault_uri, 'auth-sample-secret', secret_version=KeyVaultId.version_none))
+        secret_bundle = client.get_secret(vault.properties.vault_uri, 'auth-sample-secret', secret_version=KeyVaultId.version_none)
+        print(secret_bundle)
 
     @keyvaultsample
     def auth_using_adal_callback(self):
@@ -78,11 +80,12 @@ class AuthenticationSample(KeyVaultSampleBase):
 
         # set and get a secret from the vault to validate the client is authenticated
         print('creating secret...')
-        print(client.set_secret(vault.properties.vault_uri, 'auth-sample-secret', 'client is authenticated to the vault'))
+        secret_bundle = client.set_secret(vault.properties.vault_uri, 'auth-sample-secret', 'client is authenticated to the vault')
+        print(secret_bundle)
 
         print('getting secret...')
-        print(client.get_secret(vault.properties.vault_uri, 'auth-sample-secret', secret_version=KeyVaultId.version_none))
-
+        secret_bundle = client.get_secret(vault.properties.vault_uri, 'auth-sample-secret', secret_version=KeyVaultId.version_none)
+        print(secret_bundle)
 
 if __name__ == "__main__":
     run_all_samples([AuthenticationSample()])
