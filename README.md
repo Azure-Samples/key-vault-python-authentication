@@ -8,10 +8,9 @@ author: schaabs
 This Sample repo includes sample code demonstrating common mechanism for authenticating to an Azure Key Vault vault.
 
 ## Samples in this repo
-authentication_sample.py
-
-        auth_using_service_principle_credentials -- authenticates to an Azure Key Vault vault using AAD service principle credentials 
-        auth_using_adal_callback -- authenticates to an Azure Key Vault vault by providing a callback to authenticate using adal
+* authentication_sample.py
+  * auth_using_service_principle_credentials -- authenticates to an Azure Key Vault vault using AAD service principle credentials 
+  * auth_using_adal_callback -- authenticates to an Azure Key Vault vault by providing a callback to authenticate using adal
 
 
 ## Running The samples
