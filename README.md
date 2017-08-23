@@ -3,7 +3,7 @@ services: key-vault
 platforms: python
 author: schaabs
 ---
-# Authentication samples for Azure Key VAult using the Azure Python SDK
+# Authentication samples for Azure Key Vault using the Azure Python SDK
 
 This Sample repo includes sample code demonstrating common mechanism for authenticating to an Azure Key Vault vault.
 
