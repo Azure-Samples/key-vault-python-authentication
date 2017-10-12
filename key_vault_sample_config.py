@@ -15,16 +15,16 @@ class KeyVaultSampleConfig(object):
     :ivar subscription_id: Azure subscription id for the user intending to run the sample
     :vartype subscription_id: str
     
-    :ivar client_id: Azure Active Directory Application Client ID to run the sample
+    :ivar client_id: Azure Active Directory AppID of the Service Principle to run the sample
     :vartype client_id: str
-    
-    :ivar client_oid: Azure Active Directory Application Client Object ID to run the sample
+
+    :ivar client_oid: Azure Active Directory Object ID of the Service Principal to run the sample
     :vartype client_oid: str
-    
+
     :ivar tenant_id: Azure Active Directory tenant id of the user intending to run the sample
     :vartype tenant_id: str
-    
-    :ivar client_secret: Azure Active Directory Application Client Secret to run the sample
+
+    :ivar client_secret: Azure Active Directory Application Key to run the sample
     :vartype client_secret: str
     
     :ivar location: Azure regional location on which to execute the sample 
