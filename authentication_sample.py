@@ -87,5 +87,6 @@ class AuthenticationSample(KeyVaultSampleBase):
         secret_bundle = client.get_secret(vault.properties.vault_uri, 'auth-sample-secret', secret_version=KeyVaultId.version_none)
         print(secret_bundle)
 
+
 if __name__ == "__main__":
     run_all_samples([AuthenticationSample()])

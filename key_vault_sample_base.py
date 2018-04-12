@@ -157,18 +157,22 @@ class KeyVaultSampleBase(object):
         permissions.secrets = SECRET_PERMISSIONS_ALL
         permissions.certificates = CERTIFICATE_PERMISSIONS_ALL
         
-        policy = AccessPolicyEntry(self.config.tenant_id, self.config.client_oid, permissions)
+        policy = AccessPolicyEntry(tenant_id=self.config.tenant_id,
+                                   object_id=self.config.client_oid,
+                                   permissions=permissions)
 
-        properties = VaultProperties(self.config.tenant_id, Sku(name='standard'), access_policies=[policy])
+        properties = VaultProperties(tenant_id=self.config.tenant_id,
+                                     sku=Sku(name='standard'),
+                                     access_policies=[policy])
 
-        parameters = VaultCreateOrUpdateParameters(self.config.location, properties)
+        parameters = VaultCreateOrUpdateParameters(location=self.config.location, properties=properties)
         parameters.properties.enabled_for_deployment = True
         parameters.properties.enabled_for_disk_encryption = True
         parameters.properties.enabled_for_template_deployment = True
 
         print('creating vault {}'.format(vault_name))
 
-        vault = self.keyvault_mgmt_client.vaults.create_or_update(self.config.group_name, vault_name, parameters)
+        vault = self.keyvault_mgmt_client.vaults.create_or_update(self.config.group_name, vault_name, parameters).result()
 
         # wait for vault DNS entry to be created
         # see issue: https://github.com/Azure/azure-sdk-for-python/issues/1172
