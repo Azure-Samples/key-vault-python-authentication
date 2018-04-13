@@ -28,6 +28,8 @@ KEY_PERMISSIONS_ALL = [perm.value for perm in KeyPermissions]
 CERTIFICATE_PERMISSIONS_ALL = [perm.value for perm in CertificatePermissions]
 
 _rand = Random()
+_failed = []
+
 
 def get_name(base):
     """
@@ -41,6 +43,7 @@ def get_name(base):
         for i in range(min(5, 23 - len(name))):
             name += str(_rand.choice(range(10)))
     return name
+
 
 def keyvaultsample(f):
     """
@@ -56,10 +59,12 @@ def keyvaultsample(f):
         except Exception as e:
             print('ERROR: running sample failed with raised exception:')
             traceback.print_exception(type(e), e, getattr(e, '__traceback__', None))
+            _failed.append(f.__name__)
     wrapper.__name__ = f.__name__
     wrapper.__doc__ = f.__doc__
     wrapper.kv_sample = True
     return wrapper
+
 
 def run_all_samples(samples):
     """
@@ -82,6 +87,8 @@ def run_all_samples(samples):
 
     for f in sample_funcs:
         f()
+
+    return len(_failed)
 
 
 class KeyVaultSampleBase(object):

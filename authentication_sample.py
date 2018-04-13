@@ -15,7 +15,7 @@
 # These are read from the environment and exposed through the KeyVaultSampleConfig class. For more information please
 # see the implementation in key_vault_sample_config.py
 
-
+import sys
 from key_vault_sample_base import KeyVaultSampleBase, keyvaultsample, get_name, run_all_samples
 from azure.common.credentials import ServicePrincipalCredentials
 from azure.keyvault import KeyVaultClient, KeyVaultAuthentication
@@ -89,4 +89,4 @@ class AuthenticationSample(KeyVaultSampleBase):
 
 
 if __name__ == "__main__":
-    run_all_samples([AuthenticationSample()])
+    sys.exit(run_all_samples([AuthenticationSample()]))
