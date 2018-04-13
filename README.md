@@ -28,7 +28,7 @@ This Sample repo includes sample code demonstrating common mechanism for authent
 3. Clone the repository.
 
     ```
-    git clone https://github.com/Azure-Samples/key-vault-python-autentication.git
+    git clone https://github.com/Azure-Samples/key-vault-python-authentication.git
     ```
 
 4. Install the dependencies using pip.
