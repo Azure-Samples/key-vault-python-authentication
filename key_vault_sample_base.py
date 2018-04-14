@@ -66,14 +66,14 @@ def keyvaultsample(f):
     return wrapper
 
 
-def run_all_samples(samples):
+def run_all_samples(samples, requested=None):
     """
     runs all sample methods (methods marked with @keyvaultsample) on the specified samples objects,
     filtering to any sample methods specified on the command line
     :param samples: a list of sample objects
     :return: None 
     """
-    requested_samples = sys.argv[1:]
+    requested_samples = requested if requested is not None else sys.argv[1:]
     sample_funcs = []
 
     for s in samples:
@@ -110,8 +110,8 @@ class KeyVaultSampleBase(object):
     :ivar resource_mgmt_client: Azure resource management client used for managing azure resources, access, and groups 
     :vartype resource_mgmt_client:  :class: `ResourceManagementClient <azure.mgmt.resource.ResourceManagementClient>`
     """
-    def __init__(self):
-        self.config = KeyVaultSampleConfig()
+    def __init__(self, config=None):
+        self.config = config or KeyVaultSampleConfig()
         self.credentials = None
         self.keyvault_data_client = None
         self.keyvault_mgmt_client = None

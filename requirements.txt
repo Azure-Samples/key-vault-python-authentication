@@ -1,7 +1,7 @@
 adal==0.4.6
 asn1crypto==0.22.0
 azure-common==1.1.8
-azure-keyvault==0.3.6
+azure-keyvault=>1.0.0b1
 azure-mgmt-keyvault==0.40.0
 azure-mgmt-nspkg==2.0.0
 azure-mgmt-resource==1.1.0
