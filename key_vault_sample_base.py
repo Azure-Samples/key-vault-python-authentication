@@ -181,30 +181,9 @@ class KeyVaultSampleBase(object):
 
         vault = self.keyvault_mgmt_client.vaults.create_or_update(self.config.group_name, vault_name, parameters).result()
 
-        # wait for vault DNS entry to be created
-        # see issue: https://github.com/Azure/azure-sdk-for-python/issues/1172
-        self._poll_for_vault_connection(vault.properties.vault_uri)
-
         print('created vault {} {}'.format(vault_name, vault.properties.vault_uri))
 
         return vault
-
-    def _poll_for_vault_connection(self, vault_uri, retry_wait=10, max_retries=4):
-        """
-        polls the data client 'get_secrets' method until a 200 response is received indicating the the vault
-        is available for data plane requests
-        """
-        last_error = None
-        for x in range(max_retries - 1):
-            try:
-                # sleep first to avoid improper DNS caching
-                time.sleep(retry_wait)
-                self.keyvault_data_client.get_secrets(vault_uri)
-                return
-            except ClientRequestError as e:
-                print('vault connection not available')
-                last_error = e
-        raise last_error
 
     def _serialize(self, obj):
         if isinstance(obj, Paged):
