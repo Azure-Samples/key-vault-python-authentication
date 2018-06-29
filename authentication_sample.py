@@ -100,14 +100,18 @@ class AuthenticationSample(KeyVaultSampleBase):
         # create an adal authentication context
         auth_context = adal.AuthenticationContext('https://login.microsoftonline.com/%s' % self.config.tenant_id)
 
+        # using the XPlat command line client id as it is available across all tenants and subscriptions
+        # this would be replaced by your app id
+        xplat_client_id = '04b07795-8ddb-461a-bbee-02f9e1bf7b46'
+
         # create a callback to supply the token type and access token on request
         def adal_callback(server, resource, scope):
             user_code_info = auth_context.acquire_user_code(resource,
-                                                            self.config.client_id)
+                                                            xplat_client_id)
 
             print(user_code_info['message'])
             token = auth_context.acquire_token_with_device_code(resource=resource,
-                                                                client_id=self.config.client_id,
+                                                                client_id=xplat_client_id,
                                                                 user_code_info=user_code_info)
             return token['tokenType'], token['accessToken']
 
