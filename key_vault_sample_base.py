@@ -28,6 +28,8 @@ KEY_PERMISSIONS_ALL = [perm.value for perm in KeyPermissions]
 CERTIFICATE_PERMISSIONS_ALL = [perm.value for perm in CertificatePermissions]
 
 _rand = Random()
+_failed = []
+
 
 def get_name(base):
     """
@@ -41,6 +43,7 @@ def get_name(base):
         for i in range(min(5, 23 - len(name))):
             name += str(_rand.choice(range(10)))
     return name
+
 
 def keyvaultsample(f):
     """
@@ -56,19 +59,21 @@ def keyvaultsample(f):
         except Exception as e:
             print('ERROR: running sample failed with raised exception:')
             traceback.print_exception(type(e), e, getattr(e, '__traceback__', None))
+            _failed.append(f.__name__)
     wrapper.__name__ = f.__name__
     wrapper.__doc__ = f.__doc__
     wrapper.kv_sample = True
     return wrapper
 
-def run_all_samples(samples):
+
+def run_all_samples(samples, requested=None):
     """
     runs all sample methods (methods marked with @keyvaultsample) on the specified samples objects,
     filtering to any sample methods specified on the command line
     :param samples: a list of sample objects
     :return: None 
     """
-    requested_samples = sys.argv[1:]
+    requested_samples = requested if requested is not None else sys.argv[1:]
     sample_funcs = []
 
     for s in samples:
@@ -82,6 +87,8 @@ def run_all_samples(samples):
 
     for f in sample_funcs:
         f()
+
+    return len(_failed)
 
 
 class KeyVaultSampleBase(object):
@@ -103,8 +110,8 @@ class KeyVaultSampleBase(object):
     :ivar resource_mgmt_client: Azure resource management client used for managing azure resources, access, and groups 
     :vartype resource_mgmt_client:  :class: `ResourceManagementClient <azure.mgmt.resource.ResourceManagementClient>`
     """
-    def __init__(self):
-        self.config = KeyVaultSampleConfig()
+    def __init__(self, config=None):
+        self.config = config or KeyVaultSampleConfig()
         self.credentials = None
         self.keyvault_data_client = None
         self.keyvault_mgmt_client = None
@@ -157,43 +164,26 @@ class KeyVaultSampleBase(object):
         permissions.secrets = SECRET_PERMISSIONS_ALL
         permissions.certificates = CERTIFICATE_PERMISSIONS_ALL
         
-        policy = AccessPolicyEntry(self.config.tenant_id, self.config.client_oid, permissions)
+        policy = AccessPolicyEntry(tenant_id=self.config.tenant_id,
+                                   object_id=self.config.client_oid,
+                                   permissions=permissions)
 
-        properties = VaultProperties(self.config.tenant_id, Sku(name='standard'), access_policies=[policy])
+        properties = VaultProperties(tenant_id=self.config.tenant_id,
+                                     sku=Sku(name='standard'),
+                                     access_policies=[policy])
 
-        parameters = VaultCreateOrUpdateParameters(self.config.location, properties)
+        parameters = VaultCreateOrUpdateParameters(location=self.config.location, properties=properties)
         parameters.properties.enabled_for_deployment = True
         parameters.properties.enabled_for_disk_encryption = True
         parameters.properties.enabled_for_template_deployment = True
 
         print('creating vault {}'.format(vault_name))
 
-        vault = self.keyvault_mgmt_client.vaults.create_or_update(self.config.group_name, vault_name, parameters)
-
-        # wait for vault DNS entry to be created
-        # see issue: https://github.com/Azure/azure-sdk-for-python/issues/1172
-        self._poll_for_vault_connection(vault.properties.vault_uri)
+        vault = self.keyvault_mgmt_client.vaults.create_or_update(self.config.group_name, vault_name, parameters).result()
 
         print('created vault {} {}'.format(vault_name, vault.properties.vault_uri))
 
         return vault
-
-    def _poll_for_vault_connection(self, vault_uri, retry_wait=10, max_retries=4):
-        """
-        polls the data client 'get_secrets' method until a 200 response is received indicating the the vault
-        is available for data plane requests
-        """
-        last_error = None
-        for x in range(max_retries - 1):
-            try:
-                # sleep first to avoid improper DNS caching
-                time.sleep(retry_wait)
-                self.keyvault_data_client.get_secrets(vault_uri)
-                return
-            except ClientRequestError as e:
-                print('vault connection not available')
-                last_error = e
-        raise last_error
 
     def _serialize(self, obj):
         if isinstance(obj, Paged):

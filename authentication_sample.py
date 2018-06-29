@@ -15,7 +15,7 @@
 # These are read from the environment and exposed through the KeyVaultSampleConfig class. For more information please
 # see the implementation in key_vault_sample_config.py
 
-
+import sys
 from key_vault_sample_base import KeyVaultSampleBase, keyvaultsample, get_name, run_all_samples
 from azure.common.credentials import ServicePrincipalCredentials
 from azure.keyvault import KeyVaultClient, KeyVaultAuthentication
@@ -87,5 +87,49 @@ class AuthenticationSample(KeyVaultSampleBase):
         secret_bundle = client.get_secret(vault.properties.vault_uri, 'auth-sample-secret', secret_version=KeyVaultId.version_none)
         print(secret_bundle)
 
+    @keyvaultsample
+    def auth_user_with_device_code(self):
+        """
+        authenticates to the Azure Key Vault by providing a callback to authenticate using adal
+        """
+        # create a vault to validate authentication with the KeyVaultClient
+        vault = self.create_vault()
+
+        import adal
+
+        # create an adal authentication context
+        auth_context = adal.AuthenticationContext('https://login.microsoftonline.com/%s' % self.config.tenant_id)
+
+        # using the XPlat command line client id as it is available across all tenants and subscriptions
+        # this would be replaced by your app id
+        xplat_client_id = '04b07795-8ddb-461a-bbee-02f9e1bf7b46'
+
+        # create a callback to supply the token type and access token on request
+        def adal_callback(server, resource, scope):
+            user_code_info = auth_context.acquire_user_code(resource,
+                                                            xplat_client_id)
+
+            print(user_code_info['message'])
+            token = auth_context.acquire_token_with_device_code(resource=resource,
+                                                                client_id=xplat_client_id,
+                                                                user_code_info=user_code_info)
+            return token['tokenType'], token['accessToken']
+
+        # create a KeyVaultAuthentication instance which will callback to the supplied adal_callback
+        auth = KeyVaultAuthentication(adal_callback)
+
+        # create the KeyVaultClient using the created KeyVaultAuthentication instance
+        client = KeyVaultClient(auth)
+
+        # set and get a secret from the vault to validate the client is authenticated
+        print('creating secret...')
+        secret_bundle = client.set_secret(vault.properties.vault_uri, 'auth-sample-secret', 'client is authenticated to the vault')
+        print(secret_bundle)
+
+        print('getting secret...')
+        secret_bundle = client.get_secret(vault.properties.vault_uri, 'auth-sample-secret', secret_version=KeyVaultId.version_none)
+        print(secret_bundle)
+
+
 if __name__ == "__main__":
-    run_all_samples([AuthenticationSample()])
+    sys.exit(run_all_samples([AuthenticationSample()]))

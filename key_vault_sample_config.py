@@ -42,4 +42,4 @@ class KeyVaultSampleConfig(object):
         self.tenant_id = os.getenv('AZURE_TENANT_ID', '44444444-4444-4444-4444-444444444444')
         self.client_secret = os.getenv('AZURE_CLIENT_SECRET', 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz=')
         self.location = os.getenv('AZURE_LOCATION', 'westus')
-        self.group_name = os.getenv('AZURE_RESOURCE_GROUP', 'azure-sample-group')
+        self.group_name = os.getenv('AZURE_RESOURCE_GROUP', 'azure-key-vault-samples')
