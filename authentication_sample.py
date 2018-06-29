@@ -125,9 +125,7 @@ class AuthenticationSample(KeyVaultSampleBase):
         print('getting secret...')
         secret_bundle = client.get_secret(vault.properties.vault_uri, 'auth-sample-secret', secret_version=KeyVaultId.version_none)
         print(secret_bundle)
-        token = auth_context.acquire_token_with_device_code(resource=resource,
-                                                    client_id=client_id,
-                                                    user_code_info=auth_context.aquire_user_code(resource, client_id))
+
 
 if __name__ == "__main__":
     sys.exit(run_all_samples([AuthenticationSample()]))
