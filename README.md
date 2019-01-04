@@ -65,12 +65,12 @@ To install Python, please go to https://www.python.org/downloads/
 
 ## More information
 
-* What is Key Vault? - https://docs.microsoft.com/en-us/azure/key-vault/key-vault-whatis
-* Get started with Azure Key Vault - https://docs.microsoft.com/en-us/azure/key-vault/key-vault-get-started
-* Azure Key Vault General Documentation - https://docs.microsoft.com/en-us/azure/key-vault/
-* Azure Key Vault REST API Reference - https://docs.microsoft.com/en-us/rest/api/keyvault/
-* Azure SDK for Python Documentation - https://docs.microsoft.com/en-us/python/api/overview/azure/key-vault?view=azure-python 
-* Azure Active Directory Documenation - https://docs.microsoft.com/en-us/azure/active-directory/
+* [What is Key Vault?](https://docs.microsoft.com/en-us/azure/key-vault/key-vault-whatis)
+* [Get started with Azure Key Vault](https://docs.microsoft.com/en-us/azure/key-vault/key-vault-get-started)
+* [Azure Key Vault General Documentation](https://docs.microsoft.com/en-us/azure/key-vault/)
+* [Azure Key Vault REST API Reference](https://docs.microsoft.com/en-us/rest/api/keyvault/)
+* [Azure SDK for Python Documentation](https://docs.microsoft.com/en-us/python/api/overview/azure/key-vault?view=azure-python)
+* [Azure Active Directory Documenation](https://docs.microsoft.com/en-us/azure/active-directory/)
   
 # Contributing
 
