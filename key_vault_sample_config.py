@@ -14,7 +14,7 @@ class KeyVaultSampleConfig(object):
 
     :ivar subscription_id: Azure subscription id for the user intending to run the sample
     :vartype subscription_id: str
-    
+
     :ivar client_id: Azure Active Directory AppID of the Service Principle to run the sample
     :vartype client_id: str
 
@@ -26,20 +26,26 @@ class KeyVaultSampleConfig(object):
 
     :ivar client_secret: Azure Active Directory Application Key to run the sample
     :vartype client_secret: str
-    
+
     :ivar location: Azure regional location on which to execute the sample 
     :vartype location: str
-    
+
     :ivar group_name: Azure resource group on which to execute the sample 
     :vartype group_name: str
     """
 
     def __init__(self):
         # get credential information from the environment or replace the dummy values with your client credentials
-        self.subscription_id = os.getenv('AZURE_SUBSCRIPTION_ID', '11111111-1111-1111-1111-111111111111')
-        self.client_id = os.getenv('AZURE_CLIENT_ID', '22222222-2222-2222-2222-222222222222')
-        self.client_oid = os.getenv('AZURE_CLIENT_OID', '33333333-3333-3333-3333-333333333333')
-        self.tenant_id = os.getenv('AZURE_TENANT_ID', '44444444-4444-4444-4444-444444444444')
-        self.client_secret = os.getenv('AZURE_CLIENT_SECRET', 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz=')
+        self.subscription_id = os.getenv(
+            'AZURE_SUBSCRIPTION_ID', '11111111-1111-1111-1111-111111111111')
+        self.client_id = os.getenv(
+            'AZURE_CLIENT_ID', '22222222-2222-2222-2222-222222222222')
+        self.client_oid = os.getenv(
+            'AZURE_CLIENT_OID', '33333333-3333-3333-3333-333333333333')
+        self.tenant_id = os.getenv(
+            'AZURE_TENANT_ID', '44444444-4444-4444-4444-444444444444')
+        self.client_secret = os.getenv(
+            'AZURE_CLIENT_SECRET', 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz=')
         self.location = os.getenv('AZURE_LOCATION', 'westus')
-        self.group_name = os.getenv('AZURE_RESOURCE_GROUP', 'azure-key-vault-samples')
+        self.group_name = os.getenv(
+            'AZURE_RESOURCE_GROUP', 'azure-key-vault-samples')

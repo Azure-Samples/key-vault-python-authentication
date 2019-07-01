@@ -45,11 +45,13 @@ class AuthenticationSample(KeyVaultSampleBase):
 
         # set and get a secret from the vault to validate the client is authenticated
         print('creating secret...')
-        secret_bundle = client.set_secret(vault.properties.vault_uri, 'auth-sample-secret', 'client is authenticated to the vault')
+        secret_bundle = client.set_secret(
+            vault.properties.vault_uri, 'auth-sample-secret', 'client is authenticated to the vault')
         print(secret_bundle)
 
         print('getting secret...')
-        secret_bundle = client.get_secret(vault.properties.vault_uri, 'auth-sample-secret', secret_version=KeyVaultId.version_none)
+        secret_bundle = client.get_secret(
+            vault.properties.vault_uri, 'auth-sample-secret', secret_version=KeyVaultId.version_none)
         print(secret_bundle)
 
     @keyvaultsample
@@ -63,7 +65,8 @@ class AuthenticationSample(KeyVaultSampleBase):
         import adal
 
         # create an adal authentication context
-        auth_context = adal.AuthenticationContext('https://login.microsoftonline.com/%s' % self.config.tenant_id)
+        auth_context = adal.AuthenticationContext(
+            'https://login.microsoftonline.com/%s' % self.config.tenant_id)
 
         # create a callback to supply the token type and access token on request
         def adal_callback(server, resource, scope):
@@ -80,11 +83,13 @@ class AuthenticationSample(KeyVaultSampleBase):
 
         # set and get a secret from the vault to validate the client is authenticated
         print('creating secret...')
-        secret_bundle = client.set_secret(vault.properties.vault_uri, 'auth-sample-secret', 'client is authenticated to the vault')
+        secret_bundle = client.set_secret(
+            vault.properties.vault_uri, 'auth-sample-secret', 'client is authenticated to the vault')
         print(secret_bundle)
 
         print('getting secret...')
-        secret_bundle = client.get_secret(vault.properties.vault_uri, 'auth-sample-secret', secret_version=KeyVaultId.version_none)
+        secret_bundle = client.get_secret(
+            vault.properties.vault_uri, 'auth-sample-secret', secret_version=KeyVaultId.version_none)
         print(secret_bundle)
 
     @keyvaultsample
@@ -98,7 +103,8 @@ class AuthenticationSample(KeyVaultSampleBase):
         import adal
 
         # create an adal authentication context
-        auth_context = adal.AuthenticationContext('https://login.microsoftonline.com/%s' % self.config.tenant_id)
+        auth_context = adal.AuthenticationContext(
+            'https://login.microsoftonline.com/%s' % self.config.tenant_id)
 
         # using the XPlat command line client id as it is available across all tenants and subscriptions
         # this would be replaced by your app id
@@ -123,11 +129,13 @@ class AuthenticationSample(KeyVaultSampleBase):
 
         # set and get a secret from the vault to validate the client is authenticated
         print('creating secret...')
-        secret_bundle = client.set_secret(vault.properties.vault_uri, 'auth-sample-secret', 'client is authenticated to the vault')
+        secret_bundle = client.set_secret(
+            vault.properties.vault_uri, 'auth-sample-secret', 'client is authenticated to the vault')
         print(secret_bundle)
 
         print('getting secret...')
-        secret_bundle = client.get_secret(vault.properties.vault_uri, 'auth-sample-secret', secret_version=KeyVaultId.version_none)
+        secret_bundle = client.get_secret(
+            vault.properties.vault_uri, 'auth-sample-secret', secret_version=KeyVaultId.version_none)
         print(secret_bundle)
 
 
