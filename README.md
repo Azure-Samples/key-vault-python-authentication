@@ -3,6 +3,21 @@ services: key-vault
 platforms: python
 author: schaabs
 ---
+
+***DISCLAIMER: The data plane samples in this repo are for `azure-keyvault`. In the interest of simplifying APIs, `azure-keyvault` and `KeyVaultClient` have been split into separate packages and clients. For samples using these latest packages, please visit:***
+
+- [`azure-keyvault-certificates` samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-certificates/samples)
+- [`azure-keyvault-keys` samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-keys/samples)
+- [`azure-keyvault-secrets` samples](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-secrets/samples)
+
+***This repo is archived since `azure-keyvault-x` packages have become stable. For the latest management plane package, please visit [`azure-mgmt-keyvault`](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-mgmt-keyvault).***
+
+***DISCLAIMER: If you are looking to migrate from `azure-keyvault` to `azure-keyvault-x`, we suggest getting started with the following migration guides:***
+
+- [`azure-keyvault-certificates` migration guide](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-certificates/migration_guide.md)
+- [`azure-keyvault-keys` migration guide](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys/migration_guide.md)
+- [`azure-keyvault-secrets` migration guide](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-secrets/migration_guide.md)
+
 # Authentication samples for Azure Key Vault using the Azure Python SDK
 
 This Sample repo includes sample code demonstrating common mechanism for authenticating to an Azure Key Vault vault.
